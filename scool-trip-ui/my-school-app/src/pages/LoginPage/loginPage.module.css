@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.loginContainer {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    font-family: sans-serif;
+}
+
+.blueSide {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #2b55b5;
+    color: white;
+    padding: 50px;
+}
+
+.blueSide h1 {
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.formSide {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9fbfc;
+    padding: 40px;
+}
+
+.formBox {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formBox h2 {
+    color: #333333;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.inputField {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.loginButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.registerButton {
+    width: 100%;
+    padding: 12px;
+    background-color: hsl(189, 91%, 60%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
