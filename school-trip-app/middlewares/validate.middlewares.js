@@ -1,4 +1,3 @@
-import Schema from "mongoose";
 
 const validateRequest = (Schema) => {
     return (req, res, next) => {

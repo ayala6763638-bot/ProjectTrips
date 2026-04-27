@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginTeacher } from "../../api/api";
 import styles from "./loginPage.module.css";
+import { useAppState,ACTIONS } from "../../context/AppStateProvider";
 
 function LoginPage() {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({ firstName: "", id: "" });
+    const {dispatch}=useAppState();
     const onChanges = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
@@ -16,6 +18,9 @@ function LoginPage() {
         }
         try {
             const res = await loginTeacher({ firstName: credentials.firstName, id: credentials.id });
+            dispatch({ type: ACTIONS.SET_STUDENTS, payload: [] });
+            dispatch({ type: ACTIONS.SET_STUDENTS_IN_DANGER, payload: [] });
+            dispatch({ type: ACTIONS.SET_TEACHER_LOCATION, payload: null });
             console.log("Full response from server:", res);
             localStorage.setItem("teacher-id", res.data.id)
             navigate("/teacher-dashboard");
@@ -33,7 +38,7 @@ function LoginPage() {
                 </div>
                 <div className={styles.formSide}>
                     <div className={styles.formBox}>
-                        <h2>הכנסי לחשבונך , משתמש/ת חדש/ה? הירשמי כעת!</h2>
+                        <h2>הכנסי לחשבונך , משתמשת חדשה? הירשמי כעת!</h2>
                         <input className={styles.inputField} name="firstName" type="text" onChange={onChanges} value={credentials.firstName} placeholder="שם פרטי"></input>
                         <input className={styles.inputField} name="id" type="text" onChange={onChanges} value={credentials.id} placeholder="ת''ז"></input>
                         <button className={styles.loginButton} onClick={login}>login</button>

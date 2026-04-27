@@ -13,20 +13,18 @@
 
 .blueSide {
     width: 50%;
+    background-color: #2b55b5;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px;
     text-align: center;
-    background-color: #2b55b5;
-    color: white;
-    padding: 50px;
+    line-height: 1.5;
 }
 
-.blueSide h1 {
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
+
 
 .formSide {
     width: 50%;

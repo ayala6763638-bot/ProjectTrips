@@ -1,9 +1,9 @@
-import { createContext,useContext,useEffect } from "react";
+import { createContext,useContext,useEffect,useState } from "react";
 import io from "socket.io-client";
 
 const socketcon=createContext();
 
-export const socketProvider=({children})=>{
+export const SocketProvider=({children})=>{
     const [socket,setsocket]=useState(null);
     useEffect(()=>{
         const newsocket=io("http://localhost:5000");

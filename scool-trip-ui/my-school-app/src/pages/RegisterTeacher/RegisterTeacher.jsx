@@ -2,10 +2,12 @@ import { useState } from "react";
 import { registerTeacher as apiregister } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import styles from "../RegisterTeacher/RegisterTeacher.module.css"
+import { useAppState,ACTIONS } from "../../context/AppStateProvider";
 
 function RegisterTeacher() {
     const [teacher, setTeacher] = useState({ firstName: "", lastName: "", className: "", id: "" });
     const navigator = useNavigate();
+    const {dispatch}=useAppState();
     const onChanges = (e) => {
         setTeacher({ ...teacher, [e.target.name]: e.target.value });
     };
@@ -22,6 +24,7 @@ function RegisterTeacher() {
         }
         try {
             await apiregister(teacherWithLocation);
+            dispatch({type: ACTIONS.SET_STUDENTS,payload: []});
             localStorage.setItem("teacher-id", teacher.id);
             console.log("successfull");
             navigator("/teacher-dashboard");

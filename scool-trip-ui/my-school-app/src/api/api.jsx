@@ -34,11 +34,11 @@ export const getstudentsByClass = (className, teacherId) => {
 };
 
 export const addStudentLocation = (id, location) => {
-    return api.post(`students/add-location/${id}`, { coordinates: location });
+    return api.post(`students/update-location/${id}`, { coordinates: location });
 };
 
 export const addteacherLocation = (id, location) => {
-    return api.post(`teachers/add-location/${id}`, { coordinates: location });
+    return api.post(`teachers/update-location/${id}`, { coordinates: location });
 };
 
 export const getmyclass= (teacherId) => {

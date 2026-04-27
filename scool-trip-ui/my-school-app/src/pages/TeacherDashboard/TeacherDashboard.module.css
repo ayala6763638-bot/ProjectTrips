@@ -1,0 +1,102 @@
+.container {
+    padding: 40px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    direction: rtl;
+    background-color: #f0f2f5;
+    min-height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 20px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+.actionCard p{
+    color: #718096;
+    font-size: 0.9rem;
+}
+.welcomeHeader {
+   background: linear-gradient(135deg, #9ecbea , #8093a0);
+    color: white;
+    padding: 30px ;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+.greetingText h1 {
+    font-size: 25px;
+    margin: 0;
+}
+
+
+.logoutBtn {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.logoutBtn:hover {
+    transform: scale(1.05);
+    background: #418aba;
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.bigNumber {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+.actionsRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.actionCard {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 1px solid #edf2f7;
+}
+
+.actionCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    border-color: #3498db;
+}
+
+.actionCard h3 {
+    margin-top: 15px 0;
+    color: #2d3748;
+}

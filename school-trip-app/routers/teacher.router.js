@@ -2,7 +2,7 @@ import { Router } from "express";
 import teacherModel from "../models/teacher.model.js";
 import validateTeacher from "../validations/Validation.js";
 import validateRequest from "../middlewares/validate.middlewares.js";
-
+import validateLocation from "../middlewares/validateLocation.middleware.js";
 const teacherRouter = Router();
 
 //add teacher to the app
@@ -39,7 +39,7 @@ teacherRouter.get("/all", async (req, res) => {
     }
 });
 //update location of the teacher
-teacherRouter.post("/add-location/:id", async (req, res) => {
+teacherRouter.post("/update-location/:id",validateLocation, async (req, res) => {
     try {
         const teacherId = req.params.id;
         const newCoordinates = req.body.coordinates;
@@ -48,8 +48,8 @@ teacherRouter.post("/add-location/:id", async (req, res) => {
             return res.status(404).json({ message: " not found" });
         }
         teacher.lastLocation = {
-            coordinates: newCoordinates,
-            time: Date.now()
+            coordinates: req.body.coordinates,
+            time: validation.now()
         };
         await teacher.save();
         return res.status(200).json({ message: "location updated successfully", teacher });
@@ -57,6 +57,8 @@ teacherRouter.post("/add-location/:id", async (req, res) => {
         return res.status(500).json({ message: "error updating " });
     }
 });
+
+
     
 
 export default teacherRouter;

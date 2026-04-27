@@ -1,111 +1,87 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { getmyclass,getstudentindangeroues,getteacherlocation } from "../../api/api";
-
+import { useAppState } from "../../context/AppStateProvider";
+import { dmsToDecimal } from "../../Utlis/CalculatingAndValidet.js";
+import styles from "./MapView.module.css"; 
 
 function SetToCenter({ center }) {
     const map = useMap();
     useEffect(() => {
-        if (center) {
-            map.setView(center);
-        }
+        if (center) map.setView(center, 15); 
     }, [center, map]);
     return null;
 }
-//המרה בין אחוזים לעשרוני
-const converttodecimaly = (dms) => {
-    if (!dms)
-        return null;
-    const deg = parseFloat(dms.degrees) || 0;
-    const min = parseFloat(dms.minutes) || 0;
-    const sec = parseFloat(dms.seconds) || 0;
-    return deg + (min / 60) + (sec / 3600);
-};
 
 function MapView() {
-    const [Students, setStudents] = useState([]);
-    const [teacherLocation, setTeacherLocation] = useState(null);
+    const { state, getClassData } = useAppState();
+    const { students, teacherLocation = null, studentsInDanger = [] } = state;
+    const [mapCenter, setCenter] = useState([32.0853, 34.7818]);
     const teacherId = localStorage.getItem("teacher-id");
-    const [studentsInDanger, setStudentsInDanger] = useState([]);
-    const [center, setCenter] = useState([32.0853, 34.7818]);
+
+    const CenterOnTeacher = () => {
+        const lat = dmsToDecimal(teacherLocation?.lastLocation?.coordinates?.latitude);
+        const lng = dmsToDecimal(teacherLocation?.lastLocation?.coordinates?.longitude);
+        if (lat && lng) setCenter([lat, lng]);
+    };
+
+    const CenterOnStudent = (student) => {
+        const lat = dmsToDecimal(student?.lastLocation?.coordinates?.latitude);
+        const lng = dmsToDecimal(student?.lastLocation?.coordinates?.longitude);
+        if (lat && lng) setCenter([lat, lng]);
+    };
+
     useEffect(() => {
-        const getStudents = async () => {
-            try {
-                const res = await getmyclass(teacherId);
-                setStudents(res.data.students);
-                setTeacherLocation(res.data.teacher);
-            const studentsindangers = await getstudentindangeroues(teacherId);
-            setStudentsInDanger(studentsindangers.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getStudents();
-        const interval = setInterval(async () => {
-            try {
-                const responseS = await getstudentindangeroues(teacherId);
-                setStudentsInDanger(response.data);
-                const responseT = await getteacherlocation(teacherId);
-                setTeacherLocation(responseT.data);
-            } catch (error) {   
-                console.log(error);
-            }
-        }, 60000);
-        return()=> clearInterval(interval);
-    }, [teacherId]);
-    const lat = converttodecimaly(teacherLocation?.lastLocation?.coordinates?.latitude);
-    const lng = converttodecimaly(teacherLocation?.lastLocation?.coordinates?.longitude);
+        if (teacherId && typeof getClassData === 'function') {
+            getClassData(teacherId);
+        }
+    }, [teacherId, getClassData]);
+
+    const teacherLat = dmsToDecimal(teacherLocation?.lastLocation?.coordinates?.latitude);
+    const teacherLng = dmsToDecimal(teacherLocation?.lastLocation?.coordinates?.longitude);
+
     return (
-        <div>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <h2>לוח בקרה</h2>
-                {lat && <button onClick={() => setCenter([lat, lng])}>מרכז מפה על המורה</button>}
-                {studentsInDanger.map(s => (
-                    <div key={s.id} style={{ color: "red", margin: "5px" }}>
-                        {s.firstName} {s.lastName} נמצא במרחק מסוכן ({s.distance.toFixed(1)} ק"מ)
-                        <button onClick={() => {
-                            const latitude1 = converttodecimaly(s.lastLocation.coordinates.latitude);
-                            const longitude1 = converttodecimaly(s.lastLocation.coordinates.longitude);
-                            setCenter([latitude1, longitude1]);
-                        }}>נווט אליה</button>
+        <div className={styles.container}>
+            <div className={styles.sidebar}>
+                <h2 className={styles.header}>לוח בקרה</h2>
+                
+                {teacherLat && teacherLng && (
+                    <button className={styles.btn} onClick={CenterOnTeacher}>
+                        מרכז מפה על המורה
+                    </button>
+                )}
+
+                <h3>התראות (תלמידות בסיכון):</h3>
+                {studentsInDanger?.map(s => (
+                    <div key={s.id} className={styles.dangerCard}>
+                        <div className={styles.dangerText}>
+                            {s.firstName} {s.lastName} ({s.distance?.toFixed(1)} ק"מ)
+                        </div>
+                        <button onClick={() => CenterOnStudent(s)}>נווט אליה</button>
                     </div>
                 ))}
             </div>
-            <div style={{ flex: 1 }}>
-                <MapContainer center={[32.0853, 34.7818]} zoom={13} style={{ height: "100vh", width: "100%" }}>
-                    <SetToCenter center={center} />
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    {teacherLocation && (
-                        <Marker position={[lat, lng]}>
-                            <Popup>
-                                מיקום המורה: {teacherLocation.firstName} {teacherLocation.lastName}
-                            </Popup>
+            <div className={styles.mapWrapper}>
+                <MapContainer center={mapCenter} zoom={13} style={{ height: "100%", width: "100%" }}>
+                    <SetToCenter center={mapCenter} />
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    
+                    {teacherLocation && teacherLat && teacherLng && (
+                        <Marker position={[teacherLat, teacherLng]}>
+                            <Popup>המורה: {teacherLocation.firstName}</Popup>
                         </Marker>
                     )}
-                    {Students.map((Student) => {
-                        if (!Student.lastLocation || !Student.lastLocation.coordinates)
-                            return null;
-                        const longitude = converttodecimaly(Student.lastLocation.coordinates.longitude);
-                        const latitude = converttodecimaly(Student.lastLocation.coordinates.latitude);
-                        const dangerousStudents= studentsInDanger.find(s => s.id === Student.id);
-                        const distance = dangerousStudents ? dangerousStudents.distance : 0;
-                        let isdanger = false;
-                        if(dangerousStudents!==undefined && dangerousStudents!==null)
-                            isdanger = true;
-                        else
-                            isdanger = false;
+                    
+                    {students?.map((student) => {
+                        const lng = dmsToDecimal(student.lastLocation?.coordinates?.longitude);
+                        const lat = dmsToDecimal(student.lastLocation?.coordinates?.latitude);
+                        if (!lat || !lng) return null;
+                        
+                        const isDangerous = studentsInDanger.find(s => s.id === student.id);
                         return (
-                            <Marker key={Student.id} position={[latitude, longitude]}>
+                            <Marker key={student.id} position={[lat, lng]}>
                                 <Popup>
-                                    {isdanger ? (
-                                        <span style={{ color: "red" }}>בטווח מסוכן ❌ ({distance.toFixed(1)} ק"מ)</span>
-                                    ) : (
-                                        <span style={{ color: "green" }}>בטווח בטוח ⚠️ </span>
-                                    )}
-                                    {Student.firstName} {Student.lastName}
+                                    {isDangerous ? "❌ בסיכון" : "✅ תקין"}
+                                    <br />{student.firstName} {student.lastName}
                                 </Popup>
                             </Marker>
                         );
@@ -115,4 +91,5 @@ function MapView() {
         </div>
     );
 }
+
 export default MapView;

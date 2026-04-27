@@ -17,15 +17,15 @@ app.use(cors());
 app.use(express.json());
 io.on('connection', (socket) => {
     console.log('the user connected', socket.id);
+    
 });
 app.set('socketio', io);
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);
-
 const MONGO_URI = "mongodb://localhost:27017/SchoolTripsDB";
 mongoose.connect(MONGO_URI).then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.error("Connection error:", err));
 const port = 5000;
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`the app runing on http://localhost:${port}`);
 });

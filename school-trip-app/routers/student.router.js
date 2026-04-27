@@ -1,15 +1,16 @@
 import { Router } from "express";
 import studentModel from "../models/student.model.js";
-import studentValidation from "../validations/studentValidation.js";
+import Validation from "../validations/Validation.js";
 import validateRequest from "../middlewares/validate.middlewares.js";
 import isTeacher from "../middlewares/authorizeTeacher.middleware.js";
 import teacherModel from "../models/teacher.model.js";
 import distinationlocation from "../calculateDistance/calculateDistance.js";
+import validateLocation from "../middlewares/validateLocation.middleware.js";
 
 const studentRouter = Router();
 
 //add student to the app  
-studentRouter.post("/add", isTeacher, validateRequest(studentValidation), async (req, res) => {
+studentRouter.post("/add", isTeacher, validateRequest(Validation), async (req, res) => {
     try {
         const teacherId = req.headers['teacher-id'];
         const teacher = await teacherModel.findOne({ id: teacherId });
@@ -60,7 +61,7 @@ studentRouter.get("/my-class", isTeacher, async (req, res) => {
     }
 });
 //update location of the student
-studentRouter.post("/add-location/:id", async (req, res) => {
+studentRouter.post("/update-location/:id",validateLocation, async (req, res) => {
     try {
         const studentId = req.params.id;
         const neaCoordinates = req.body.coordinates;
@@ -69,8 +70,8 @@ studentRouter.post("/add-location/:id", async (req, res) => {
             return res.status(404).json({ message: "student not found" });
         }
         student.lastLocation = {
-            coordinates: neaCoordinates,
-            time: Date.now()
+            coordinates: req.body.coordinates,
+            time: validation.now()
         };
         await student.save();
         return res.status(200).json({ message: "location updated successfully", student });
@@ -78,6 +79,7 @@ studentRouter.post("/add-location/:id", async (req, res) => {
         return res.status(500).json({ message: "error updating location", error: error.message });
     }
 });
+
 //get all students
 studentRouter.get("/all", isTeacher, async (req, res) => {
     try {
