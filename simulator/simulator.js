@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const SOCKET_URL = "http://localhost:5000";
-const MINUTES = 60000;
+const MINUTES = 3 * 1000; 
 
 const file = path.join(__dirname, "wayOfStudents.json");
 if (!fs.existsSync(file)) {
@@ -48,12 +48,13 @@ function sendUpdate(e) {
             time: new Date().toISOString()
         }
     };
-
     if (e.type === "teacher") {
         socket.emit("simulateTeacherUpdate", payload);
+        console.log("Sim sending to server:", payload.id);
         console.log("emit simulateTeacherUpdate:", e.id, "idx=", e.idx);
     } else {
         socket.emit("simulateStudentUpdate", payload);
+        console.log("Sim sending to server:", payload.id);
         console.log("emit simulateStudentUpdate:", e.id, "idx=", e.idx);
     }
     e.idx = (e.idx + 1) % e.path.length;

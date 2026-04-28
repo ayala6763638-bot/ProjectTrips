@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginTeacher } from "../../api/api";
 import styles from "./loginPage.module.css";
-import { useAppState,ACTIONS } from "../../context/AppStateProvider";
+import { useAppState } from "../../context/useAppState.js";
+import { ACTIONS } from "../../context/constants";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -13,7 +14,12 @@ function LoginPage() {
     }
     const login = async () => {
         if (!credentials.firstName || !credentials.id) {
-            alert("Please fill everythings");
+            alert("נא למלא את כל השדות");
+            return;
+        }
+        if(!ACTIONS.nameCorect.test(credentials.firstName))
+        {
+            alert("שם פרטי לא תקין, יש להשתמש רק באותיות בעברית או באנגלית");
             return;
         }
         try {
@@ -21,12 +27,11 @@ function LoginPage() {
             dispatch({ type: ACTIONS.SET_STUDENTS, payload: [] });
             dispatch({ type: ACTIONS.SET_STUDENTS_IN_DANGER, payload: [] });
             dispatch({ type: ACTIONS.SET_TEACHER_LOCATION, payload: null });
-            console.log("Full response from server:", res);
             localStorage.setItem("teacher-id", res.data.id)
             navigate("/teacher-dashboard");
         } catch (error) {
-            console.log(error);
-            alert("Login failed");
+            const errorMessage = error.response?.data?.message || "אינך רשום במערכת, אנא נסה שוב או צור חשבון חדש";
+            alert(errorMessage);
         }
     }
     return (

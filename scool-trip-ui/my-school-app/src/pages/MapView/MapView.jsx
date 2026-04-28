@@ -1,13 +1,13 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
-import { useAppState } from "../../context/AppStateProvider";
 import { dmsToDecimal } from "../../Utlis/CalculatingAndValidet.js";
-import styles from "./MapView.module.css"; 
+import styles from "./MapView.module.css";
+import { useAppState } from "../../context/useAppState.js";
 
 function SetToCenter({ center }) {
     const map = useMap();
     useEffect(() => {
-        if (center) map.setView(center, 15); 
+        if (center) map.setView(center, 15);
     }, [center, map]);
     return null;
 }
@@ -43,7 +43,7 @@ function MapView() {
         <div className={styles.container}>
             <div className={styles.sidebar}>
                 <h2 className={styles.header}>לוח בקרה</h2>
-                
+
                 {teacherLat && teacherLng && (
                     <button className={styles.btn} onClick={CenterOnTeacher}>
                         מרכז מפה על המורה
@@ -51,31 +51,37 @@ function MapView() {
                 )}
 
                 <h3>התראות (תלמידות בסיכון):</h3>
-                {studentsInDanger?.map(s => (
+                {studentsInDanger && studentsInDanger.length > 0?(studentsInDanger.map(s => (
                     <div key={s.id} className={styles.dangerCard}>
                         <div className={styles.dangerText}>
                             {s.firstName} {s.lastName} ({s.distance?.toFixed(1)} ק"מ)
                         </div>
                         <button onClick={() => CenterOnStudent(s)}>נווט אליה</button>
                     </div>
-                ))}
+                ))
+                ) :(
+                <div className={styles.noDanger}>
+                    <span className={styles.success}>☑️</span>
+                    <p>הכל תקין , אין תלמידות במצב סכנה כרגע</p>
+                </div>
+                )}
             </div>
             <div className={styles.mapWrapper}>
                 <MapContainer center={mapCenter} zoom={13} style={{ height: "100%", width: "100%" }}>
                     <SetToCenter center={mapCenter} />
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    
+
                     {teacherLocation && teacherLat && teacherLng && (
                         <Marker position={[teacherLat, teacherLng]}>
                             <Popup>המורה: {teacherLocation.firstName}</Popup>
                         </Marker>
                     )}
-                    
+
                     {students?.map((student) => {
                         const lng = dmsToDecimal(student.lastLocation?.coordinates?.longitude);
                         const lat = dmsToDecimal(student.lastLocation?.coordinates?.latitude);
                         if (!lat || !lng) return null;
-                        
+
                         const isDangerous = studentsInDanger.find(s => s.id === student.id);
                         return (
                             <Marker key={student.id} position={[lat, lng]}>

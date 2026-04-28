@@ -20,13 +20,22 @@ teacherRouter.post("/add", validateRequest(validateTeacher), async (req, res) =>
 teacherRouter.post("/login", async (req, res) => {
     try {
         const { id, firstName } = req.body;
+        if(!id || !firstName)
+        {
+            return res.status(400).json({ message: "נא למלא את השדות המתאימים" });
+        }
+        const nameCoorect=/^[a-zA-Z\u0590-\u05FF\s]+$/;
+        if(!nameCoorect.test(firstName))
+        {
+            return res.status(400).json({ message: "שם פרטי לא תקין, יש להשתמש רק באותיות בעברית או באנגלית" });
+        }
         const teacher = await teacherModel.findOne({ id: id, firstName: firstName });
         if (!teacher) {
-            return res.status(401).json({ message: "error in the id or in the name" });
+            return res.status(401).json({ message: "שם או ת''ז לא תקינים" });
         }
-        return res.status(200).json({ message: "login succesful", id: teacher.id });
+        return res.status(200).json({ message: "התחברת בהצלחה", id: teacher.id });
     } catch (error) {
-        return res.status(500).json({ message: "server error" });
+        return res.status(500).json({ message: "שגיאת שרת" });
     }
 });
 //get all teachers
@@ -49,7 +58,7 @@ teacherRouter.post("/update-location/:id",validateLocation, async (req, res) => 
         }
         teacher.lastLocation = {
             coordinates: req.body.coordinates,
-            time: validation.now()
+            time: req.body._validated.time
         };
         await teacher.save();
         return res.status(200).json({ message: "location updated successfully", teacher });

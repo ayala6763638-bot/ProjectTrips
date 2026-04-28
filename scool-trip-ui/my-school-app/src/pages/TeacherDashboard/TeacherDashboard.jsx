@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "./TeacherDashboard.module.css";
-import { useAppState, ACTIONS } from "../../context/AppStateProvider";
+import { useAppState } from "../../context/useAppState.js";
+import { ACTIONS } from "../../context/constants";
 import { getmyclass } from "../../api/api";
 function TeacherDashboard() {
     const navigate = useNavigate();

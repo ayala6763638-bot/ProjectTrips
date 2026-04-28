@@ -59,6 +59,26 @@ h2 {
     color: #070809;
     background-color: #f7fafc;
 }
+.noStudentsCell {
+    text-align: center;
+    padding: 40px !important;
+    background-color: #f9f9f9;
+    color: #666;
+    border: none;
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.emptyState p {
+    margin: 5px 0;
+}
 
 .addButton {
     background: #3498db;

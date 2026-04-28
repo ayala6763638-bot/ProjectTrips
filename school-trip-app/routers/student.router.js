@@ -61,17 +61,16 @@ studentRouter.get("/my-class", isTeacher, async (req, res) => {
     }
 });
 //update location of the student
-studentRouter.post("/update-location/:id",validateLocation, async (req, res) => {
+studentRouter.post("/update-location/:id", validateLocation, async (req, res) => {
     try {
         const studentId = req.params.id;
-        const neaCoordinates = req.body.coordinates;
         const student = await studentModel.findOne({ id: studentId });
         if (!student) {
             return res.status(404).json({ message: "student not found" });
         }
         student.lastLocation = {
             coordinates: req.body.coordinates,
-            time: validation.now()
+            time: req.body._validated.time
         };
         await student.save();
         return res.status(200).json({ message: "location updated successfully", student });
@@ -91,37 +90,36 @@ studentRouter.get("/all", isTeacher, async (req, res) => {
 });
 //get the student in dangers place
 studentRouter.get("/in-danger", isTeacher, async (req, res) => {
-   
-        const { teacherId } = req.query;
-        try 
-        {
-            const teacher = await teacherModel.findOne({ id: teacherId });
-            if (!teacher) {
-                return res.status(404).json({ message: "teacher not found" });
-            }
-            const students = await studentModel.find({ className: teacher.className });
-            const studentsInDanger = students.filter(student => {
-                const distance = distinationlocation(
-                    student.lastLocation.coordinates.latitude.degrees,
-                    student.lastLocation.coordinates.longitude.degrees,
-                    teacher.lastLocation.coordinates.latitude.degrees,
-                    teacher.lastLocation.coordinates.longitude.degrees
-                );
-                return distance > 3; 
-            })
-            .map(s=>{
+
+    const { teacherId } = req.query;
+    try {
+        const teacher = await teacherModel.findOne({ id: teacherId });
+        if (!teacher) {
+            return res.status(404).json({ message: "teacher not found" });
+        }
+        const students = await studentModel.find({ className: teacher.className });
+        const studentsInDanger = students.filter(student => {
+            const distance = distinationlocation(
+                student.lastLocation.coordinates.latitude.degrees,
+                student.lastLocation.coordinates.longitude.degrees,
+                teacher.lastLocation.coordinates.latitude.degrees,
+                teacher.lastLocation.coordinates.longitude.degrees
+            );
+            return distance > 3;
+        })
+            .map(s => {
                 const distance = distinationlocation(
                     s.lastLocation.coordinates.latitude.degrees,
                     s.lastLocation.coordinates.longitude.degrees,
                     teacher.lastLocation.coordinates.latitude.degrees,
                     teacher.lastLocation.coordinates.longitude.degrees
                 );
-                return {...s.toObject(), distance: distance};  
+                return { ...s.toObject(), distance: distance };
             });
-            res.status(200).json(studentsInDanger);
-        } catch (error) {
-            return res.status(500).json({ message: "error getting students in danger", error: error.message });
-        }
+        res.status(200).json(studentsInDanger);
+    } catch (error) {
+        return res.status(500).json({ message: "error getting students in danger", error: error.message });
+    }
 });
 
 

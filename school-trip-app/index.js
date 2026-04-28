@@ -1,10 +1,12 @@
 import express from 'express';
-import studentRouter from './routers/student.router.js';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import teacherRouter from './routers/teacher.router.js';
 import { Server } from 'socket.io';
 import http from 'http';
+import studentModel from './models/student.model.js';
+import teacherModel from './models/teacher.model.js';
+import studentRouter from './routers/student.router.js';
+import teacherRouter from './routers/teacher.router.js';
 
 const app = express();//object for the project
 const server = http.createServer(app);
@@ -16,9 +18,27 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 io.on('connection', (socket) => {
-    console.log('the user connected', socket.id);
-    
+    socket.on('simulateStudentUpdate', async (payload) => {
+        const student = await studentModel.findOne({ id: payload.id });
+        if (!student) return console.warn('Student not found:', payload.id);
+        student.lastLocation = payload.lastLocation;
+        await student.save();
+        io.emit('studentLocationUpdated', student);
+    });
+
+    socket.on('simulateTeacherUpdate', async (payload) => {
+        try {
+            const teacher = await teacherModel.findOne({ id: payload.id });
+            if (!teacher) return console.warn('Teacher not found for update:', payload.id);
+            teacher.lastLocation = payload.lastLocation;
+            await teacher.save();
+            io.emit('teacherLocationInUpdate', teacher);
+        } catch (err) {
+            console.error('Error updating teacher in DB:', err);
+        }
+    });
 });
+
 app.set('socketio', io);
 app.use('/students', studentRouter);
 app.use('/teachers', teacherRouter);

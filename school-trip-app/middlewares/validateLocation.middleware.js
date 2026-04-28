@@ -84,12 +84,8 @@ export default async function validateLocation(req, res, next) {
                 if (isFinite(prevLat) && isFinite(prevLng) && prevTime) {
                     const km = distinationlocation(prevLat, prevLng, lat, lng);
                     const timeHours = Math.max((t - prevTime) / (1000 * 60 * 60), 1 / 3600); // at least 1 sec to avoid div0
-                    const speedKmh = km / timeHours;
                     if (km > 500) { 
                         return res.status(400).json({ message: "location jump too large", jumpKm: km });
-                    }
-                    if (speedKmh > 300) { 
-                        return res.status(400).json({ message: "impossibly fast movement detected", speedKmh });
                     }
                 }
             }

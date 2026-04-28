@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { addstudent } from "../../api/api";
-import { useNavigate } from "react-router-dom";
-import { useAppState, ACTIONS } from "../../context/AppStateProvider";
+import { useAppState } from "../../context/useAppState.js";
 import "./AddStudentPage.module.css"; 
-
+import { ACTIONS } from "../../context/constants";
+import { isValidId } from "../../Utlis/CalculatingAndValidet.js";
 function AddStudent() {
   const [student, setStudent] = useState({ firstName: "", lastName: "", id: "" });
-  const navigate = useNavigate();
   const teacherId = localStorage.getItem("teacher-id");
   const { dispatch } = useAppState();
 
@@ -15,8 +14,20 @@ function AddStudent() {
   };
 
   const add = async () => {
+    if (!student.firstName || !student.lastName || !student.id) {
+      alert("נא למלא את כל השדות");
+      return;
+    }
+    if (!ACTIONS.nameCorect.test(student.firstName) || !ACTIONS.nameCorect.test(student.lastName)) {
+      alert("שם פרטי או שם משפחה לא תקינים, יש להשתמש רק באותיות בעברית או באנגלית");
+      return;
+    }
+    if (!isValidId(student.id)) {
+      alert("תעודת זהות לא תקינה");
+      return;
+    }
     if (!teacherId) {
-      console.log("לא נמצא מורה");
+      alert("לא נמצא מורה");
       return;
     }
     const studentWithLocation = {
@@ -32,9 +43,10 @@ function AddStudent() {
     try {
       const res = await addstudent(studentWithLocation, teacherId);
       dispatch({ type: ACTIONS.UPDATE_STUDENT, payload: res.data.student });
-      console.log("הוספה בוצעה בהצלחה");
+      alert("הוספה בוצעה בהצלחה");
     } catch (error) {
-      console.log(error);
+     const errorMessage = error.response?.data?.message || "הוספה נכשלה, אנא נסה שוב";
+     alert(errorMessage);
     }
   };
 

@@ -10,7 +10,7 @@ function DashboardLayout() {
         <h2>ניהול טיולים</h2>
         <ul>
           <li onClick={() => navigate("/teacher-dashboard")}>דף הבית</li>
-          <li onClick={() => navigate("/map-view")}>מפת אייכון בזמן אמת</li>
+          <li onClick={() => navigate("/map-view")}>מפת איכון בזמן אמת</li>
           <li onClick={() => navigate("/class-students")}>ניהול תלמידות</li>
         </ul>
       </nav>

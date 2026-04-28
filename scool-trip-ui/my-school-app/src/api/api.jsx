@@ -41,7 +41,9 @@ export const addteacherLocation = (id, location) => {
     return api.post(`teachers/update-location/${id}`, { coordinates: location });
 };
 
-export const getmyclass= (teacherId) => {
+
+
+export const getmyclass = (teacherId) => {
     return api.get('students/my-class', getAuthConfig(teacherId));
 };
 
@@ -50,7 +52,7 @@ export const getteacherlocation = (teacherId) => {
 };
 
 export const getstudentindangeroues = (teacherId) => {
-    return api.get('students/in-danger', 
+    return api.get('students/in-danger',
         {
             params: { teacherId },
             headers: { 'teacher-id': teacherId }

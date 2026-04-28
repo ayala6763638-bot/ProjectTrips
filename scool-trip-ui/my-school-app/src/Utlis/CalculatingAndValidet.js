@@ -22,7 +22,11 @@ export const isLocationValid = (newCoords, prevCoords, thresholdKm = 50) => {
 
     const prevLat = dmsToDecimal(prevCoords.latitude);
     const prevLng = dmsToDecimal(prevCoords.longitude);
-
+    if (!isLocationValid(updatedStudent.lastLocation.coordinates, prevLocation)) {
+        console.warn("❌ ה-Validation פסל את העדכון עבור:", updatedStudent.id);
+        console.warn("נתונים שהתקבלו:", updatedStudent.lastLocation.coordinates);
+        return;
+    }
     const dist = haversineKm(prevLat, prevLng, lat, lng);
     return dist <= thresholdKm;
 };
