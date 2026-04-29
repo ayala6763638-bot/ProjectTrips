@@ -1,6 +1,7 @@
 import Joi from 'joi';
 import { isValidId } from '../../scool-trip-ui/my-school-app/src/Utlis/CalculatingAndValidet.js';
 
+
 const Validation = Joi.object({
     firstName: Joi.string().min(2).max(30).required().messages({
         'string.min': 'first name must contain at least 2 charcters ',

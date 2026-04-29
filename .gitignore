@@ -29,14 +29,12 @@ public/build/
 .parcel-cache/
 .cache-loader/
 
-# Environment files (keep example files like .env.example)
 .env
 .env.local
 .env.*.local
 .env.test
 .env.production
 
-# Editor directories and files
 .vscode/
 .idea/
 *.suo
@@ -44,44 +42,34 @@ public/build/
 *.njsproj
 *.sln
 
-# OS generated files
 .DS_Store
 Thumbs.db
 desktop.ini
 ehthumbs.db
 Icon
 
-# Logs
 logs/
 *.log
 
-# Database files
 *.sqlite
 *.sqlite3
 *.db
 
-# TypeScript cache
 *.tsbuildinfo
 
-# Misc caches
 .cache/
 .sass-cache/
 
-# Parcel / Next / other frameworks
 .next/
 .out/
 .parcel-cache/
 
-# JetBrains
 *.iml
 *.iws
 .idea/
 
-# Sensitive or local files
 .env.local
 .env.*.local
 
-# Optional: lock files are usually committed (package-lock.json, yarn.lock, pnpm-lock.yaml)
-# Do not ignore lockfiles unless you intentionally want to.
 
 # End of file

@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { loginTeacher } from "../../api/api";
 import styles from "./loginPage.module.css";
 import { useAppState } from "../../context/useAppState.js";
-import { ACTIONS } from "../../context/constants";
+import { ACTIONS, nameCorect } from "../../context/constants";
 
 function LoginPage() {
+    
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({ firstName: "", id: "" });
-    const {dispatch}=useAppState();
+    const { dispatch } = useAppState();
     const onChanges = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     }
@@ -17,8 +18,7 @@ function LoginPage() {
             alert("נא למלא את כל השדות");
             return;
         }
-        if(!ACTIONS.nameCorect.test(credentials.firstName))
-        {
+        if (!nameCorect.test(credentials.firstName)) {
             alert("שם פרטי לא תקין, יש להשתמש רק באותיות בעברית או באנגלית");
             return;
         }

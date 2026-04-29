@@ -1,8 +1,8 @@
 [
     {
         "id": "040536617",
-        "firstName": "אילנה",
-        "lastName": "רוזן",
+        "firstName": "רוחמה",
+        "lastName": "אמור",
         "className": "ח1",
         "type": "student",
         "path": [
@@ -23,7 +23,7 @@
     {
         "id": "325105567",
         "firstName": "נעמה",
-        "lastName": "כהן",
+        "lastName": "פנירי",
         "className": "ח1",
         "type": "student",
         "path": [
@@ -43,8 +43,8 @@
     },
     {
         "id": "213748759",
-        "firstName": "דנה",
-        "lastName": "ישראל",
+        "firstName": "דיני",
+        "lastName": "רינדר",
         "className": "ח1",
         "type": "student",
         "path": [
@@ -64,8 +64,8 @@
     },
     {
         "id": "315012963",
-        "firstName": "מיקה",
-        "lastName": "ברק",
+        "firstName": "שירה",
+        "lastName": "קונצקי",
         "className": "ח1",
         "type": "student",
         "path": [
@@ -85,8 +85,8 @@
     },
     {
         "id": "036160992",
-        "firstName": "חוה",
-        "lastName": "כהן",
+        "firstName": "חוי",
+        "lastName": "סטפנסקי",
         "className": "ח1",
         "type": "teacher",
         "path": [

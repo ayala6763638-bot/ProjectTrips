@@ -2,11 +2,11 @@ import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 
 function DashboardLayout() {
+  
   const navigate = useNavigate();
-
   return (
     <div className={styles.layoutContainer}>
-      <nav className={styles.sidebar}>
+      <nav className={styles.bar}>
         <h2>ניהול טיולים</h2>
         <ul>
           <li onClick={() => navigate("/teacher-dashboard")}>דף הבית</li>
@@ -14,7 +14,7 @@ function DashboardLayout() {
           <li onClick={() => navigate("/class-students")}>ניהול תלמידות</li>
         </ul>
       </nav>
-            <main className={styles.content}>
+      <main className={styles.content}>
         <Outlet />
       </main>
     </div>

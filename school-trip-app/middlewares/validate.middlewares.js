@@ -8,4 +8,5 @@ const validateRequest = (Schema) => {
         next();
     };
 };
+
 export default validateRequest;

@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "./TeacherDashboard.module.css";
 import { useAppState } from "../../context/useAppState.js";
-import { ACTIONS } from "../../context/constants";
+import { ACTIONS, nameCorect } from "../../context/constants";
 import { getmyclass } from "../../api/api";
+
 function TeacherDashboard() {
+
     const navigate = useNavigate();
     const { state, dispatch } = useAppState();
     const teacherId = localStorage.getItem("teacher-id");
@@ -18,8 +20,7 @@ function TeacherDashboard() {
         if (!teacherId) {
             return;
         }
-        if(!state?.teacherLocation)
-        {
+        if (!state?.teacherLocation) {
             const fetchTeacherLocation = async () => {
                 try {
                     const res = await getmyclass(teacherId);
@@ -43,12 +44,12 @@ function TeacherDashboard() {
             };
             fetchStudents();
         }
-    },[teacherId, state?.students?.length, dispatch]);
+    }, [teacherId, state?.students?.length, dispatch]);
     return (
         <div className={styles.container}>
             <header className={styles.welcomeHeader}>
                 <div className={styles.greetingText}>
-                <h1>ברוכה הבאה, {state.teacherLocation?.firstName}</h1>
+                    <h1>ברוכה הבאה, {state.teacherLocation?.firstName}</h1>
                 </div>
                 <button className={styles.logoutBtn} onClick={logout}>יציאה</button>
             </header>
@@ -65,7 +66,7 @@ function TeacherDashboard() {
                         <h3>ניהול תלמידות</h3>
                         <p>הוספה, חיפוש וסינון לפי כיתה. כל מורה רואה את התלמידות שלה.</p>
                     </div>
-                   
+
                 </div>
             </main>
         </div>

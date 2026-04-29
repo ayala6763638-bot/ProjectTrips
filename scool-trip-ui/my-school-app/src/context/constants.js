@@ -3,5 +3,6 @@ export const ACTIONS = {
     UPDATE_STUDENT: "UPDATE_STUDENT",
     SET_TEACHER_LOCATION: "SET_TEACHER_LOCATION",
     SET_STUDENTS_IN_DANGER: "SET_STUDENTS_IN_DANGER",
-    nameCorect: /^[a-zA-Z\u0590-\u05FF\s]+$/,
 };
+
+export const nameCorect= /^[a-zA-Z\u0590-\u05FF\s]+$/;

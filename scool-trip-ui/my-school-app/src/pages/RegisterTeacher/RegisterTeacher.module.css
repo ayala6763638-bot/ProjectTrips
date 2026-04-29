@@ -31,12 +31,14 @@
     max-width: 550px;
     background: white;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     box-sizing: border-box;
+    border-style: double;
+     border-width: 2px;
+     border-color: #3498db; 
 }
 .formBox h2 {
     color: #333333;
@@ -55,7 +57,7 @@
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 2px;
     box-sizing: border-box;
     font-size: 16px;
     background-color: #ffffff;
@@ -68,7 +70,7 @@
     background-color: #0056b3;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 2px;
     cursor: pointer;
     font-weight: bold;
     margin-top: 10px;

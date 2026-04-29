@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getmyclass } from "../../api/api";
 import { useAppState } from "../../context/useAppState.js";
 import styles from "./ClassStudents.module.css";
-import { ACTIONS } from "../../context/constants";
 
 function ClassStudents() {
+    
     const { state, dispatch, getClassData } = useAppState();
     const { students } = state ?? {};
     const [searchTerm, setSearchTerm] = useState("");
@@ -18,15 +17,6 @@ function ClassStudents() {
             getClassData(teacherId);
             return;
         }
-        const getStudents = async () => {
-            try {
-                const res = await getmyclass(teacherId);
-                dispatch({ type: ACTIONS.SET_STUDENTS, payload: res.data.students });
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        getStudents();
     }, [teacherId, dispatch, getClassData]);
     const filteredStudents = students?.filter(s =>
         s.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||

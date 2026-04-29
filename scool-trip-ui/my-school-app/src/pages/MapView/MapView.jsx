@@ -5,6 +5,7 @@ import styles from "./MapView.module.css";
 import { useAppState } from "../../context/useAppState.js";
 
 function SetToCenter({ center }) {
+
     const map = useMap();
     useEffect(() => {
         if (center) map.setView(center, 15);
@@ -51,7 +52,7 @@ function MapView() {
                 )}
 
                 <h3>התראות (תלמידות בסיכון):</h3>
-                {studentsInDanger && studentsInDanger.length > 0?(studentsInDanger.map(s => (
+                {studentsInDanger && studentsInDanger.length > 0 ? (studentsInDanger.map(s => (
                     <div key={s.id} className={styles.dangerCard}>
                         <div className={styles.dangerText}>
                             {s.firstName} {s.lastName} ({s.distance?.toFixed(1)} ק"מ)
@@ -59,11 +60,10 @@ function MapView() {
                         <button onClick={() => CenterOnStudent(s)}>נווט אליה</button>
                     </div>
                 ))
-                ) :(
-                <div className={styles.noDanger}>
-                    <span className={styles.success}>☑️</span>
-                    <p>הכל תקין , אין תלמידות במצב סכנה כרגע</p>
-                </div>
+                ) : (
+                    <div className={styles.noDanger}>
+                        <p>הכל תקין , אין תלמידות במצב סכנה כרגע</p>
+                    </div>
                 )}
             </div>
             <div className={styles.mapWrapper}>

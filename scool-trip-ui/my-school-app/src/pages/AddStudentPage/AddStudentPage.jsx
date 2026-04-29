@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { addstudent } from "../../api/api";
 import { useAppState } from "../../context/useAppState.js";
-import "./AddStudentPage.module.css"; 
-import { ACTIONS } from "../../context/constants";
+import "./AddStudentPage.module.css";
+import { ACTIONS, nameCorect } from "../../context/constants";
 import { isValidId } from "../../Utlis/CalculatingAndValidet.js";
+
 function AddStudent() {
+
   const [student, setStudent] = useState({ firstName: "", lastName: "", id: "" });
   const teacherId = localStorage.getItem("teacher-id");
   const { dispatch } = useAppState();
@@ -18,7 +20,7 @@ function AddStudent() {
       alert("נא למלא את כל השדות");
       return;
     }
-    if (!ACTIONS.nameCorect.test(student.firstName) || !ACTIONS.nameCorect.test(student.lastName)) {
+    if (!nameCorect.test(student.firstName) || !nameCorect.test(student.lastName)) {
       alert("שם פרטי או שם משפחה לא תקינים, יש להשתמש רק באותיות בעברית או באנגלית");
       return;
     }
@@ -45,8 +47,8 @@ function AddStudent() {
       dispatch({ type: ACTIONS.UPDATE_STUDENT, payload: res.data.student });
       alert("הוספה בוצעה בהצלחה");
     } catch (error) {
-     const errorMessage = error.response?.data?.message || "הוספה נכשלה, אנא נסה שוב";
-     alert(errorMessage);
+      const errorMessage = error.response?.data?.message || "הוספה נכשלה, אנא נסה שוב";
+      alert(errorMessage);
     }
   };
 

@@ -3,9 +3,11 @@ import { registerTeacher as apiregister } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import styles from "../RegisterTeacher/RegisterTeacher.module.css"
 import { useAppState } from "../../context/useAppState.js";
-import { ACTIONS } from "../../context/constants";
+import { ACTIONS, nameCorect } from "../../context/constants";
 import { isValidId } from "../../Utlis/CalculatingAndValidet.js";
+
 function RegisterTeacher() {
+
     const [teacher, setTeacher] = useState({ firstName: "", lastName: "", id: "" });
     const [className, setClassName] = useState("י");
     const [classnumber, setClassNumber] = useState("1");
@@ -19,7 +21,7 @@ function RegisterTeacher() {
             alert("נא למלא את כל השדות");
             return;
         }
-        if (!ACTIONS.nameCorect.test(teacher.firstName) || !ACTIONS.nameCorect.test(teacher.lastName)) {
+        if (!nameCorect.test(teacher.firstName) || !nameCorect.test(teacher.lastName)) {
             alert("שם פרטי או שם משפחה לא תקינים, יש להשתמש רק באותיות בעברית או באנגלית");
             return;
         }
@@ -31,7 +33,7 @@ function RegisterTeacher() {
         const teacherWithLocation = {
             ...teacher,
             className: fullClassName,
-            lastLocation: {
+            lastLocation: {//עשיתי שיהיה כברירת מחדל לבנתיים כאילו
                 coordinates: {
                     longitude: { degrees: "32", minutes: "0", seconds: "0" },
                     latitude: { degrees: "25", minutes: "0", seconds: "0" }

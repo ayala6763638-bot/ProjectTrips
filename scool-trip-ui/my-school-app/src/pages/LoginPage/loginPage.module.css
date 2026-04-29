@@ -27,7 +27,7 @@
 
 
 .formSide {
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,14 +38,16 @@
 
 .formBox {
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     background: white;
     padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 24px;
+    border-style: double;
+     border-width: 2px;
+     border-color: #3498db;
 }
 
 .formBox h2 {
@@ -59,7 +61,7 @@
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 2px;
     box-sizing: border-box;
     background-color: #ffffff;
     color: #333333;
@@ -71,7 +73,7 @@
     background-color: #0056b3;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 2px;
     cursor: pointer;
     font-weight: bold;
 }
@@ -82,7 +84,7 @@
     background-color: hsl(189, 91%, 60%);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 2px;
     cursor: pointer;
     font-weight: bold;
 }
