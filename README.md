@@ -58,7 +58,7 @@ node simulator.js
 
 דף ניהול תלמידות:
 
-![צילום מסך של דף ניהול תלמידות](./scool-trip-ui/my-school-app/src/assets/images/דף%20ניהול%20תלמידות.png)
+![צילום מסך של דף ניהול תלמידות](./scool-trip-ui/my-school-app/src/assets/images/צילום%20מסך%20של%20דף%20ניהול%20תלמידות.png)
 
 מפת איכון תלמידות בזמן אמת:
 
